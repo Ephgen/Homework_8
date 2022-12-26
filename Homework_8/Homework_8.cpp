@@ -10,26 +10,40 @@ using namespace std;
 //Задание 6: 
 //Написать функцию, которая получает указатель на динамический массив и его размер.
 //Функция должна удалить из массива все простые числа и вернуть указатель на новый динамический массив.
-
-void simpledel(int* arr,int size)
+int* createViewArr(int& size)
+{
+	cout << " Введите размер массива \n";
+	cin >> size;
+	int* arr = new int[size];
+	for (int i = 0; i < size; i++) {
+		*(arr + i) = 1 + rand() % 100;
+		cout << *(arr + i) << " ";
+	}
+	return arr;
+}
+void simpledel(int* arr,int* size)
 {
 	int  nsize = 0;
-	for (int i = 0; i < size; i++) {
+	for (int i = 0; i < *size; i++) {
 		for (int j = 2; j < *(arr + i) / 2; j++) {
-			if (*(arr + i) % j == 0 && j != *(arr + i))
+			if (*(arr + i) % j == 0) {
 				nsize++;
-			break;
-		}
+				break;
+			}
+		}		
 	}
 	int* arr2 = new int[nsize];
 	int n = 0;
-	for (int i = 0; i < size; i++) {
+	for (int i = 0; i < *size; i++) {
 		for (int j = 2; j < *(arr + i) / 2; j++) {
-			if (*(arr + i) % j == 0 && j != *(arr + i))
+			if (*(arr + i) % j == 0)
+			{
 				*(arr2 + n) = *(arr + i);
 				n++;
-			break;
+				break;
+			}
 		}
+		
 	}
 	cout << endl;
 	for (int i = 0; i < nsize; i++) {
@@ -141,25 +155,21 @@ void changeSpace(char* word, int size)
 	}
 }
 
-/*Задание 9:
-	Подсчитать количество слов во введенном предложении.*/
-
 int main()
 {
 	setlocale(0, "");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
 	//Задание 6: Указатели
 //Написать функцию, которая получает указатель на динамический массив и его размер.
 //Функция должна удалить из массива все простые числа и вернуть указатель на новый динамический массив.
-	const int size = 30; 
-		int arr1[size];
-	for (int i = 0; i < size; i++) {
-		arr1[i] = 1 + rand() % 100;
-		cout << arr1[i] << " ";
-	}
-	simpledel(arr1,size);
+	//int size;
+	//int* arr1 = createViewArr(size);	
+	//int* psize = &size;
+	//simpledel(arr1,psize);
 
 
-	//Задание 7:    // Не знаю почему не работает, вроде все правильно. Заполняет массивы мусором.
+	//Задание 7:    // .
 	/*srand(time(NULL));
 	setlocale(0, "");
 	const int size = 10;
@@ -237,6 +247,35 @@ int main()
 			n++;
 		i++;
 	}	*/
+
+	/*Задание 6:
+	Пользователь вводит строку.Определить количество букв, количество цифр и количество остальных символов, присутствующих в строке.
+		Рекомендации :
+		Для проверки, что символ является числом, не обязательно сравнивать его со всеми 10 - ю цифрами, достаточно сравнить код символа с диапазоном 
+		кодов цифр.Код символа 0 – 48, 1 – 49, 2 – 50 …. 9 – 57.*/
+
+	char mass[300];
+	cout << " Введите строку символов которую надо разложить на цифры, буквы и другие символы: " << endl;
+	cin.getline(mass,300);
+	int size = 0;           
+	while (*(mass + size) != '\0')	
+		size++; //Общее количество символов	
+	cout << " В строке всего - " << size << " символов" <<endl;
+	int rletter = 0, number = 0, eletter = 0, other = 0;
+	for (int i = 0; i < size; i++) {
+		if (mass[i] >= 48 && mass[i] <= 57)
+			number++;
+		else if (mass[i] >= 128 && mass[i] <= 175 || mass[i] >= 224 && mass[i] <= 241)
+			rletter++;
+		else if (mass[i] >= 65 && mass[i] <= 90 || mass[i] >= 97 && mass[i] <= 122)
+			eletter++;
+		else
+			other++;
+	}
+	cout << number << " - чисел" << endl;
+	cout << rletter << " - русских букв" << endl;
+	cout << eletter << " - английских букв" << endl;
+	cout << other << " - Всех остальных символов" << endl;
 
 	//Задание 7:
 	//Дана строка символов.Заменить в ней все пробелы на табуляции.
